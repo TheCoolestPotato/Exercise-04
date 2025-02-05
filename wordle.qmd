@@ -1,0 +1,8 @@
+---
+title: "Wordle"
+format: html
+editor: visual
+---
+##Exercise 4 Wordle Challenge##
+
+```{r}
