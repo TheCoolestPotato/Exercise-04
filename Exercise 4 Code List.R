@@ -16,4 +16,14 @@ pick_solution <- function(df){
   answer <- str_split(answer, "")
   return(answer)
 }
+  
+play_wordle <- function(v,valid_list, num_guesses=6){
+  print("Welcome to R Wordle! You have 6 chances to correctly guess a five-letter word. Type a five-letter word below. You will receive either 'X' meaning that letter is not in the answer, 'Z' meaning the letter is in the answer but in the wrong position, or 'O' meaning that letter is in the answer in that position. Good luck!")
+  pick_solution(solution_list)
+  guess1 <- readline("Enter your first guess: ")
+  guess1 <- toupper(guess1)
+  guess1 <- str_split(guess1, "")
+  guess1 %in% answer
+   }
+
 
