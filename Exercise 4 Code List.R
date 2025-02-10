@@ -1,29 +1,53 @@
-library(tidyverse)
-library(usethis)
-library(dplyr)
-load_dictionary <- function(x) {
-  filename <- x
-  read.csv(filename)}
-valid_list <- load_dictionary("https://raw.githubusercontent.com/difiore/ada-datasets/refs/heads/main/collins-scrabble-words-2019.txt")
-solution_list <- load_dictionary("https://raw.githubusercontent.com/difiore/ada-datasets/refs/heads/main/google-10000-english-usa-no-swears.txt")
-pick_solution <- function(df){
-  solution_list <- df
-  valid_solutions <- intersect(solution_list,valid_list)
-  valid_solutions <- mutate(valid_solutions, nchar(valid_solutions$words))
-  valid_solutions <- mutate(valid_solutions, rename(valid_solutions, char_num = "nchar(valid_solutions$words)"))
-  five_letter_words <- filter(valid_solutions, char_num == "5")
-  answer <- sample(five_letter_words$words,1)
-  answer <- str_split(answer, "")
-  return(answer)
-}
-  
 play_wordle <- function(v,valid_list, num_guesses=6){
+  install.packages("tidyverse")
+  install.packages("usethis")
+  install.packages("dplyr")
+  library(tidyverse)
+  library(usethis)
+  library(dplyr)
+  load_dictionary <- function(x) {
+    filename <- x
+    read.csv(filename)}
+  valid_list <- load_dictionary("https://raw.githubusercontent.com/difiore/ada-datasets/refs/heads/main/collins-scrabble-words-2019.txt")
+  solution_list <- load_dictionary("https://raw.githubusercontent.com/difiore/ada-datasets/refs/heads/main/google-10000-english-usa-no-swears.txt")
+  pick_solution <- function(df){
+    solution_list <- df
+    valid_solutions <- intersect(solution_list,valid_list)
+    valid_solutions <- mutate(valid_solutions, nchar(valid_solutions$words))
+    valid_solutions <- mutate(valid_solutions, rename(valid_solutions, char_num = "nchar(valid_solutions$words)"))
+    five_letter_words <- filter(valid_solutions, char_num == "5")
+    answer <- sample(five_letter_words$words,1)
+    answer <- str_split(answer, "", simplify = TRUE)
+  }
   print("Welcome to R Wordle! You have 6 chances to correctly guess a five-letter word. Type a five-letter word below. You will receive either 'X' meaning that letter is not in the answer, 'Z' meaning the letter is in the answer but in the wrong position, or 'O' meaning that letter is in the answer in that position. Good luck!")
-  pick_solution(solution_list)
+  answer <- pick_solution(solution_list)
+  evaluate_guess <- function(v){
+    guess <- v
+    guess <- toupper(guess)
+    guess <- str_split(guess, "", simplify = TRUE)
+    correct_letter <- guess %in% answer
+    correct_guess <- logical(length = 5L)
+    display_guess <- logical(length = 5L)
+    for(i in 1:5){
+      correct_guess[i] <- case_when(guess[1,i] == answer[1,i] ~ TRUE, guess[1,i] != answer[1,i] ~ FALSE)
+    }
+    for(i in 1:5){
+      display_guess[i] <- case_when(correct_guess[i] == TRUE ~ "O", correct_letter[i] == TRUE ~ "Z", .default = "X")
+    }
+    print(display_guess)
+    ifelse(all(display_guess == "O"),print("Winner winner chicken dinner!"),print(display_guess))
+      }
   guess1 <- readline("Enter your first guess: ")
-  guess1 <- toupper(guess1)
-  guess1 <- str_split(guess1, "")
-  guess1 %in% answer
+  evaluate_guess(guess1)
+  guess2 <- readline("Enter your second guess (5 remaining): ")
+  evaluate_guess(guess2)
+  guess3 <- readline("Enter your third guess (4 remaining): ")
+  evaluate_guess(guess3)
+  guess4 <- readline("Enter your fourth guess (3 remaining): ")
+  evaluate_guess(guess4)
+  guess5 <- readline("Enter your fifth guess (2 remaining): ")
+  evaluate_guess(guess5)
+  guess6 <- readline("Enter your last guess (1 remaining): ")
+  evaluate_guess(guess6)
    }
-
 
