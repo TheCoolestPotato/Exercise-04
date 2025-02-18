@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -34,35 +68,6 @@ ul.task-list li input[type="checkbox"] {
 <link href="wordle_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="wordle_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -92,9 +97,33 @@ window.Quarto = {
 
 
 <p>##Exercise 4 Wordle Challenge##</p>
-<p>play_wordle &lt;- function(v,valid_list, num_guesses=6){ library(tidyverse) library(usethis) library(dplyr) load_dictionary &lt;- function(x) { filename &lt;- x read.csv(filename)} valid_list &lt;- load_dictionary(“https://raw.githubusercontent.com/difiore/ada-datasets/refs/heads/main/collins-scrabble-words-2019.txt”) solution_list &lt;- load_dictionary(“https://raw.githubusercontent.com/difiore/ada-datasets/refs/heads/main/google-10000-english-usa-no-swears.txt”) pick_solution &lt;- function(df){ solution_list &lt;- df valid_solutions &lt;- intersect(solution_list,valid_list) valid_solutions &lt;- mutate(valid_solutions, nchar(valid_solutions<span class="math inline">\(words))
-    valid_solutions &lt;- mutate(valid_solutions, rename(valid_solutions, char_num = "nchar(valid_solutions\)</span>words)“)) five_letter_words &lt;- filter(valid_solutions, char_num ==”5”) answer &lt;- sample(five_letter_words$words,1) answer &lt;- str_split(answer, ““, simplify = TRUE) } print(”Welcome to R Wordle! You have 6 chances to correctly guess a five-letter word. Type a five-letter word below. You will receive either ‘X’ meaning that letter is not in the answer, ‘Z’ meaning the letter is in the answer but in the wrong position, or ‘O’ meaning that letter is in the answer in that position. Good luck!“) answer &lt;- pick_solution(solution_list) evaluate_guess &lt;- function(v){ guess &lt;- v guess &lt;- toupper(guess) guess &lt;- str_split(guess,”“, simplify = TRUE) correct_letter &lt;- guess %in% answer correct_guess &lt;- logical(length = 5L) display_guess &lt;- logical(length = 5L) for(i in 1:5){ correct_guess[i] &lt;- case_when(guess[1,i] == answer[1,i] ~ TRUE, guess[1,i] != answer[1,i] ~ FALSE) } for(i in 1:5){ display_guess[i] &lt;- case_when(correct_guess[i] == TRUE ~”O”, correct_letter[i] == TRUE ~ “Z”, .default = “X”) } print(display_guess) ifelse(all(display_guess == “O”),print(“Winner winner chicken dinner!”),print(display_guess)) } guess1 &lt;- readline(“Enter your first guess:”) evaluate_guess(guess1) guess2 &lt;- readline(“Enter your second guess (5 remaining):”) evaluate_guess(guess2) guess3 &lt;- readline(“Enter your third guess (4 remaining):”) evaluate_guess(guess3) guess4 &lt;- readline(“Enter your fourth guess (3 remaining):”) evaluate_guess(guess4) guess5 &lt;- readline(“Enter your fifth guess (2 remaining):”) evaluate_guess(guess5) guess6 &lt;- readline(“Enter your last guess (1 remaining):”) evaluate_guess(guess6) }</p>
-<p>play_wordle()</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">play_wordle</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Welcome to R Wordle! You have 6 chances to correctly guess a five-letter word. Type a five-letter word below. You will receive either 'X' meaning that letter is not in the answer, 'Z' meaning the letter is in the answer but in the wrong position, or 'O' meaning that letter is in the answer in that position. Good luck!"
+Enter your first guess: 
+[1] "X" "X" "X" "X" "X"
+[1] "X" "X" "X" "X" "X"
+Enter your second guess (5 remaining): 
+[1] "X" "X" "X" "X" "X"
+[1] "X" "X" "X" "X" "X"
+Enter your third guess (4 remaining): 
+[1] "X" "X" "X" "X" "X"
+[1] "X" "X" "X" "X" "X"
+Enter your fourth guess (3 remaining): 
+[1] "X" "X" "X" "X" "X"
+[1] "X" "X" "X" "X" "X"
+Enter your fifth guess (2 remaining): 
+[1] "X" "X" "X" "X" "X"
+[1] "X" "X" "X" "X" "X"
+Enter your last guess (1 remaining): 
+[1] "X" "X" "X" "X" "X"
+[1] "X" "X" "X" "X" "X"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "X"</code></pre>
+</div>
+</div>
 
 </main>
 <!-- /main column -->

@@ -4,7 +4,6 @@ play_wordle <- function(v,valid_list, num_guesses=6){
   install.packages("dplyr")
   library(tidyverse)
   library(usethis)
-  library(dplyr)
   load_dictionary <- function(x) {
     filename <- x
     read.csv(filename)}
